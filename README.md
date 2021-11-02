@@ -34,7 +34,7 @@ The second project is a traffic lights simulator with a button that pedestrians 
 
 **Additionally**, I used two more blue LEDs for a Reaction Time minigame. The aim is to press the button when a LED lights up at random intervals. A correct press is signaled by the other LED turning on/off.
 
-Below is a picture of the setup and here's the [link](https://google.com) to my video showcasing functionality.
+Below is a picture of the setup and here's the [link](https://youtu.be/6ApnEIVFysw) to my video showcasing functionality.
 
 <img src = "https://github.com/Charmichles/introduction-to-robotics/blob/cba0ee2761f05f1c13d5b41ed5ccf06a291ab90f/project-2/setup.jpeg">
 
