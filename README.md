@@ -21,6 +21,8 @@ Possible improvements:
 
 This was a cool first project for getting used to Arduino code and the different types of electrical signals and how to process them.
 
+Soon after I turned this project in, I found out that each of the three LEDs have different forward voltages, so using a signle resistor for the common anode/cathode causes the colors to have inconsisent intensities due to a single LED dominating the current flow. The solution is using the correct value resistor for each LED, calculated using Ohm's Law. [This](https://www.youtube.com/watch?v=3kntdICTuUQ) video explains it quite well.
+
 ## Project 2
 
 TBD
