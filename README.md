@@ -38,9 +38,12 @@ Below is a picture of the setup and here's the [link](https://youtu.be/6ApnEIVFy
 
 <img src = "https://github.com/Charmichles/introduction-to-robotics/blob/cba0ee2761f05f1c13d5b41ed5ccf06a291ab90f/project-2/setup.jpeg">
 
-I can't think of any possible improvements at the time of writing this, but I'm sure there's something I haven't thought of. Guess I'll find out during the next lab.
+### Possible improvements:
+* using only one resistor for each group of LEDs, which works because only one LED per group is turned on during execution
+* using interrupts for events instead of the millis() function; I believe this would improve code readability and modularity
+* adding a screen which displays the user's score in the Reaction Time minigame
 
-This was a fun project which taught me how to think of ways to do multiple tasks at the same time using the Arduino.
+This was a fun project which taught me how to think of ways to emulate doing multiple tasks at the same time using the Arduino.
 
 ## Project 3
 TBD
