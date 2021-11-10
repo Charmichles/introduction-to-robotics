@@ -54,4 +54,27 @@ This was a fun project which taught me how to think of ways to emulate doing mul
 
 ## Project 3
 
+Project three is an EMF Detector. We had artistic liberty concerning the parts we could use, so I chose a seven-segment display for EMF measurement output and an active buzzer for even more user feedback. Unfortunately, I only had a paperclip to use as an antenna, so my device isn't very sensitive and has basically zero range.
+
+### Requirements:
+- seven-segment display or array of LEDs arranged however you like
+- an active/passive buzzer
+- ideally, a 3.3M resistor for the antenna, I only had 1M
+- wires and resistors for the other components
+- some type of antenna (preferably not a paperclip)
+
+Below's the picture of my setup and here's the [link](https://youtu.be/ltkqo6wFsuc) to the (very boring) video.
+
+<img src = "https://github.com/andrei-brihac/introduction-to-robotics/blob/75c0bfe7fa2c60558654c86664edc4960c29946d/project-3/setup.jpg">
+
+### Possible improvements:
+* replacing the 1M antenna resistor with a 3.3M for better sensitivity
+* replacing the paperclip antenna with a proper antenna
+* playing around with values in the code for better sensitivity
+* making it portable with a 9V battery and a better layout
+
+Due to the limitations of my human form, I couldn't use this device to find and communicate with ghosts. Would not reccomend.
+
+## Project 4
+
 TBD
