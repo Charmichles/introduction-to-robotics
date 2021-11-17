@@ -131,11 +131,11 @@ void handleDigit() {
   if (vxRead >= xDefault - JOY_MOVE_ERROR && vxRead <= xDefault + JOY_MOVE_ERROR) {  // making sure the joystick is moved along the correct axis (variable error)
     vyRead = analogRead(vyPin);
     if (vyRead <= threshMin && stickMove == false) {
-      displayDigits[digitIdx]--;
+      displayDigits[digitIdx]++;
       stickMove = true;
     }
     if (vyRead >= threshMax && stickMove == false) {
-      displayDigits[digitIdx]++;
+      displayDigits[digitIdx]--;
       stickMove = true;
     }
     if (vyRead > threshMin && vyRead < threshMax) {
