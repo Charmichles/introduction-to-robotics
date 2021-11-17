@@ -1,5 +1,6 @@
 #define PICK_DISPLAY false
 #define PICK_DIGIT true
+#define JOY_MOVE_ERROR 50
 
 const uint8_t dataPin = 12; // DS
 const uint8_t storagePin = 11; // STCP
@@ -50,10 +51,10 @@ const uint8_t vyPin = A1;
 const uint8_t buttonPin = 3;
 uint16_t vxRead = 0;
 uint16_t vyRead = 0;
-uint16_t triggerMin = 100;
-uint16_t triggerMax = 850;
-uint16_t threshMin = 400;
-uint16_t threshMax = 550;
+uint16_t xDefault = 511;
+uint16_t yDefault = 511;
+uint16_t threshMin = 350;
+uint16_t threshMax = 750;
 bool buttonState = HIGH;
 bool lastButtonState = HIGH;
 bool buttonDebounceRead;
@@ -98,47 +99,54 @@ void blinkDecimalPoint() {
 
 void handleDecimalPoint() {
   blinkDecimalPoint();
-  vxRead = analogRead(vxRead);
-  if (vxRead <= triggerMin && stickMove == false) {
-    displayDecimalPoint[dpIdx] = false;
-    dpIdx++;
-    stickMove = true;
-  }
-  if (vxRead >= triggerMax && stickMove == false) {
-    displayDecimalPoint[dpIdx] = false;
-    dpIdx--;
-    stickMove = true;
-  }
-  if (vxRead > threshMin && vxRead < threshMax) {
-    stickMove = false;
-  }
-  if (dpIdx < 0) {
-    dpIdx = displayCount - 1;
-  }
-  if (dpIdx >= displayCount) {
-    dpIdx = 0;
+  vyRead = analogRead(vyPin);
+  if (vyRead >= yDefault - JOY_MOVE_ERROR && vyRead <= yDefault + JOY_MOVE_ERROR) {
+    vxRead = analogRead(vxPin);
+    Serial.println(vxRead);
+    if (vxRead <= threshMin && vyRead >= yDefault - 10 && vyRead <= yDefault + 10 && stickMove == false) {
+      displayDecimalPoint[dpIdx] = false;
+      dpIdx++;
+      stickMove = true;
+    }
+    if (vxRead >= threshMax && stickMove == false) {
+      displayDecimalPoint[dpIdx] = false;
+      dpIdx--;
+      stickMove = true;
+    }
+    if (vxRead > threshMin && vxRead < threshMax) {
+      stickMove = false;
+    }
+    if (dpIdx < 0) {
+      dpIdx = displayCount - 1;
+    }
+    if (dpIdx >= displayCount) {
+      dpIdx = 0;
+    }
   }
 }
 
 void handleDigit() {
-  vyRead = analogRead(vyRead);
   digitIdx = displayCount - 1 - dpIdx;  // the order of the digits in the number is reversed from the order of the display pins (for example: 1234 -> 1 is on D4, 2 on D3 etc.)
-  if (vyRead <= triggerMin && stickMove == false) {
-    displayDigits[digitIdx]--;
-    stickMove = true;
-  }
-  if (vyRead >= triggerMax && stickMove == false) {
-    displayDigits[digitIdx]++;
-    stickMove = true;
-  }
-  if (vyRead > threshMin && vyRead < threshMax) {
-    stickMove = false;
-  }
-  if (displayDigits[digitIdx] < 0) {
-    displayDigits[digitIdx] = nrOfDigits - 1;
-  }
-  if (displayDigits[digitIdx] >= nrOfDigits) {
-    displayDigits[digitIdx] = 0;
+  vxRead = analogRead(vxPin);
+  if (vxRead >= xDefault - JOY_MOVE_ERROR && vxRead <= xDefault + JOY_MOVE_ERROR) {
+    vyRead = analogRead(vyPin);
+    if (vyRead <= threshMin && stickMove == false) {
+      displayDigits[digitIdx]--;
+      stickMove = true;
+    }
+    if (vyRead >= threshMax && stickMove == false) {
+      displayDigits[digitIdx]++;
+      stickMove = true;
+    }
+    if (vyRead > threshMin && vyRead < threshMax) {
+      stickMove = false;
+    }
+    if (displayDigits[digitIdx] < 0) {
+      displayDigits[digitIdx] = nrOfDigits - 1;
+    }
+    if (displayDigits[digitIdx] >= nrOfDigits) {
+      displayDigits[digitIdx] = 0;
+    }
   }
 }
 
