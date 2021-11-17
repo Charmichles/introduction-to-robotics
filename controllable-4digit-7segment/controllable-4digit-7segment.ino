@@ -13,7 +13,7 @@ const uint8_t segD4 = 4;
 
 const uint8_t displayCount = 4;
 uint8_t displayPins[displayCount] = {segD1, segD2, segD3, segD4};
-int displayDigits[displayCount];  // the digit shown on each display
+int displayDigits[displayCount];  // the digit shown on each display - is in reverse order of the pins the digits are displayed on
 bool displayDecimalPoint[displayCount];  // state of decimal point on each display
 int dpIdx = 0;
 int digitIdx = 0;
@@ -58,7 +58,7 @@ uint16_t threshMax = 750;
 bool buttonState = HIGH;
 bool lastButtonState = HIGH;
 bool buttonDebounceRead;
-unsigned long debounceDelay = 50;
+unsigned long debounceDelay = 100;
 unsigned long lastDebounceTime = 0;
 bool stickMove = false;
 
@@ -80,7 +80,7 @@ void displayNumber(uint16_t number) {
   for (uint8_t i = 0; i < displayCount; i++) {
     activateDisplay(displayPins[i]);
     writeDigit(digitArray[number % 10], displayDecimalPoint[i]);
-    delay(5);  // for muxing, too low to make a noticeable difference
+    delay(5);  // for muxing, duration is too low to make a noticeable difference
     number /= 10;
   }
 }
@@ -100,9 +100,8 @@ void blinkDecimalPoint() {
 void handleDecimalPoint() {
   blinkDecimalPoint();
   vyRead = analogRead(vyPin);
-  if (vyRead >= yDefault - JOY_MOVE_ERROR && vyRead <= yDefault + JOY_MOVE_ERROR) {
+  if (vyRead >= yDefault - JOY_MOVE_ERROR && vyRead <= yDefault + JOY_MOVE_ERROR) {  // making sure the joystick is moved along the correct axis (variable error)
     vxRead = analogRead(vxPin);
-    Serial.println(vxRead);
     if (vxRead <= threshMin && vyRead >= yDefault - 10 && vyRead <= yDefault + 10 && stickMove == false) {
       displayDecimalPoint[dpIdx] = false;
       dpIdx++;
@@ -116,6 +115,7 @@ void handleDecimalPoint() {
     if (vxRead > threshMin && vxRead < threshMax) {
       stickMove = false;
     }
+    // cyclic display
     if (dpIdx < 0) {
       dpIdx = displayCount - 1;
     }
@@ -126,9 +126,9 @@ void handleDecimalPoint() {
 }
 
 void handleDigit() {
-  digitIdx = displayCount - 1 - dpIdx;  // the order of the digits in the number is reversed from the order of the display pins (for example: 1234 -> 1 is on D4, 2 on D3 etc.)
+  digitIdx = displayCount - 1 - dpIdx;  // the order of the digits in the number is reversed from the order of the display pins (1234 -> 1 on D4, 2 on D3, etc.)
   vxRead = analogRead(vxPin);
-  if (vxRead >= xDefault - JOY_MOVE_ERROR && vxRead <= xDefault + JOY_MOVE_ERROR) {
+  if (vxRead >= xDefault - JOY_MOVE_ERROR && vxRead <= xDefault + JOY_MOVE_ERROR) {  // making sure the joystick is moved along the correct axis (variable error)
     vyRead = analogRead(vyPin);
     if (vyRead <= threshMin && stickMove == false) {
       displayDigits[digitIdx]--;
@@ -141,6 +141,7 @@ void handleDigit() {
     if (vyRead > threshMin && vyRead < threshMax) {
       stickMove = false;
     }
+    // cyclic display
     if (displayDigits[digitIdx] < 0) {
       displayDigits[digitIdx] = nrOfDigits - 1;
     }
@@ -151,8 +152,17 @@ void handleDigit() {
 }
 
 void changeGameState() {
-  displayDecimalPoint[dpIdx] = true;
-  gameState = !gameState;
+  displayDecimalPoint[dpIdx] = true;  // at the start of each state the decimal point is turned on
+  switch (gameState) {
+    case PICK_DISPLAY:
+      gameState = PICK_DIGIT;
+      break;
+    case PICK_DIGIT:
+      gameState = PICK_DISPLAY;
+      break;
+    default:
+      return;
+  }
 }
 
 void setup() {
@@ -190,8 +200,10 @@ void loop() {
     case PICK_DISPLAY:
       handleDecimalPoint();
       break;
-     case PICK_DIGIT:
+    case PICK_DIGIT:
       handleDigit();
       break;
+    default:
+      return;
   }
 }
