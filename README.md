@@ -2,7 +2,7 @@
 
 This repo will showcase the projects I worked on for the Introduction to Robotics course during the 3rd year of the Computer Science program at the University of Bucharest. Each project description contains a list of requirements, implementation details, code and image/video material.
 
-## Project 1
+## adjustable-rgb-led
 
 The first project is a controllable RGB LED using a separate potentiometer for each of the colors.
 
@@ -33,7 +33,7 @@ Soon after I turned this project in, I found out that each of the three LEDs hav
 
 </details>
   
-## Project 2
+## traffic-lights-sim
 
 The second project is a traffic lights simulator with a button that pedestrians need to use for crossing. It also uses a buzzer to signal when it is safe to cross.
 
@@ -63,7 +63,7 @@ This was a fun project which taught me how to think of ways to emulate doing mul
 
 </details>
   
-## Project 3
+## EMF-detector
 
 Project three is an EMF Detector. We had artistic liberty concerning the parts we could use, so I chose a seven-segment display for EMF measurement output and an active buzzer for even more user feedback.
 
@@ -93,7 +93,7 @@ Due to the limitations of my human form, I couldn't use this device to find and 
 
 </details>
   
-## Project 4
+## controllable-4digit-7segment
 
 Project number four is a controllable 4 digit 7 segment display using a SIPO shift register and a joystick. The digits of a number can be individually chosen in an intuitive way utilizing the joystick.
 
